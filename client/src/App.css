@@ -21,20 +21,19 @@ body, html {
 
 .section {
   margin: 0 8px 12px 8px;
-
-  p {
-    color: #000;
-    font-weight: bold;
-    margin: 0 0 4px 0;
-    padding: 0;
-  }
-
-  img {
-    width: 48px;
-    height: 48px;
-  }
 }
 
+.section p {
+  color: #000;
+  font-weight: bold;
+  margin: 0 0 4px 0;
+  padding: 0;
+}
+
+.section img {
+  width: 48px;
+  height: 48px;
+}
 
 @keyframes App-logo-spin {
   from {

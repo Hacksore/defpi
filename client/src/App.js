@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.scss';
+import './App.css';
 import Terminal from 'terminal-in-react';
 import linux from './img/icon/linux.png';
 import win from './img/icon/windows.png';
