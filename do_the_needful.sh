@@ -37,16 +37,18 @@ sudo systemctl stop dnsmasq
 
 # setup auto start
 if [ "$RUNNING_ON_PI" ]; then
-  cat "config/autostart" > "/etc/xdg/lxsession/LXDE-pi/autostart"
+  contents=$(cat "config/autostart" | sed "s/:PROFILE/LXDE-pi/g")
+  echo "$contents" > "/etc/xdg/lxsession/LXDE-pi/autostart"
 else
-  cat "config/autostart" > "/etc/xdg/lxsession/LXDE/autostart"    
+  contents=$(cat "config/autostart" | sed "s/:PROFILE/LXDE/g")
+  echo "$contents" > "/etc/xdg/lxsession/LXDE/autostart"    
 fi
 
 # install deps
 cd /home/pi/defpi/server && npm install
 
-# build the app
-cd /home/pi/defpi/client && npm run build
+# install deps && build the app
+cd /home/pi/defpi/client && npm install && npm run build
 
 # make startup script executable
 chmod +x /home/pi/defpi/config/startup.sh
