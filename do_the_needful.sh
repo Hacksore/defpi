@@ -12,31 +12,28 @@ sudo touch /var/log/defpi.log
 sudo chown pi /var/log/defpi.log
 
 echo "============================
-DEFPI, SHOW ME WHAT YOU GOT!
-      ___          
-    . -^   `--,      
-   /  =========`-_   
-  /# (--====___====\ 
- /#   .- --.  . --.| 
-/##   |  * ) (   * ),
-|##   \    /\ \   / |
-|###   ---   \ ---  |
-|####      ___)    #|
-|######           ##|
- \##### ---------- / 
-  \####           (    
+▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ 
+▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
+▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌ ▀▀▀▀█░█▀▀▀▀ 
+▐░▌       ▐░▌▐░▌          ▐░▌          ▐░▌       ▐░▌     ▐░▌     
+▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄█░▌     ▐░▌     
+▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌     ▐░▌     
+▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀▀▀      ▐░▌     
+▐░▌       ▐░▌▐░▌          ▐░▌          ▐░▌               ▐░▌     
+▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░▌          ▐░▌           ▄▄▄▄█░█▄▄▄▄ 
+▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░▌          ▐░▌          ▐░░░░░░░░░░░▌
+ ▀▀▀▀▀▀▀▀▀▀   ▀▀▀▀▀▀▀▀▀▀▀  ▀            ▀            ▀▀▀▀▀▀▀▀▀▀▀                                                                  
 ============================"
 
 # this script should do everything to setup the pi 
 sudo apt-get -y update >> /var/log/defpi.log
 sudo apt-get -y install git curl hostapd dnsmasq >> /var/log/defpi.log
 
-# TODO: fix, this is happening on raspbian
-#if [ ! -z "$RUNNING_ON_PI" ]; then
-  # echo "Installing chromium cause we are ond debian"
-  # sudo apt-get -y install chromium >> /var/log/defpi.log
-  # sudo ln -s /usr/bin/chromium /usr/bin/chromium-browser
-#fi
+if [ -z "$RUNNING_ON_PI" ]; then
+  echo "Installing chromium cause we are debian"
+  sudo apt-get -y install chromium >> /var/log/defpi.log
+  sudo ln -s /usr/bin/chromium /usr/bin/chromium-browser
+fi
 
 echo "Installing node"
 curl -sL https://deb.nodesource.com/setup_12.x | sudo bash - >> /var/log/defpi.log
@@ -51,11 +48,11 @@ sudo sed -i 's/xserver-command=X/xserver-command=X -s 0 dpms/g' /etc/lightdm/lig
 # install LCD screen
 if [ "$RUNNING_ON_PI" ]; then
   echo "Installing LCD drivers"
-  git clone https://github.com/goodtft/LCD-show /tmp/lcd >> /var/log/defpi.log
-  chmod +x /tmp/lcd/LCD35-show
+  git clone https://github.com/goodtft/LCD-show /home/pi/lcd >> /var/log/defpi.log
+  chmod +x /home/pi/lcd/LCD35-show
 
   # script needs dot sourced stuffz
-  cd /tmp/lcd/LCD35-show
+  cd /home/pi/lcd
   # run the setup script
   sudo bash LCD35-show 90 >> /var/log/defpi.log
 fi
@@ -93,7 +90,7 @@ sudo systemctl stop dnsmasq >> /var/log/defpi.log
 cat /home/pi/defpi/config/hostapd.conf | sudo tee /etc/hostapd/hostapd.conf >> /var/log/defpi.log
 cat /home/pi/defpi/config/dnsmasq.conf | sudo tee -a /etc/dnsmasq.conf >> /var/log/defpi.log
 echo "denyinterfaces wlan0" | sudo tee -a /etc/dhcpcd.conf >> /var/log/defpi.log
-cat config/interfaces | sudo tee /etc/network/interfaces >> /var/log/defpi.log
+cat /home/pi/defpi/config/interfaces | sudo tee /etc/network/interfaces >> /var/log/defpi.log
 
 sudo systemctl unmask hostapd >> /var/log/defpi.log
 sudo systemctl enable hostapd >> /var/log/defpi.log
