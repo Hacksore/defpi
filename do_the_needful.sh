@@ -5,7 +5,8 @@ RUNNING_ON_PI=$(uname -a | grep "raspberrypi")
 if [ "$RUNNING_ON_PI" ]; then
   echo "Running on raspbian"
 else 
-  echo "Running on debian"  
+  echo "Running on debian" 
+
 fi
 
 # this script should do everything to setup the pi 
@@ -14,7 +15,7 @@ sudo apt-get -y update > /dev/null
 sudo apt-get -y install chromium git curl hostapd dnsmasq > /dev/null
 
 curl -sL https://deb.nodesource.com/setup_12.x | sudo bash - > /dev/null
-sudo apt-get install -y nodejs npm > /dev/null
+sudo apt-get install -y nodejs > /dev/null
 
 npm install -g forever > /dev/null
 
