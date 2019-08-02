@@ -14,7 +14,7 @@ sudo apt-get -y update > /dev/null
 
 sudo apt-get -y install chromium git curl hostapd dnsmasq > /dev/null
 
-if [ "$RUNNING_ON_PI" ]; then
+if [ ! -z "$RUNNING_ON_PI" ]; then
   ln -s /usr/bin/chromium /usr/bin/chromium-browser
 fi
 
