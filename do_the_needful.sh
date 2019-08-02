@@ -16,7 +16,7 @@ sudo apt install -y nodejs npm
 npm install -g forever
 
 # install LCD screen
-git clone https://github.com:goodtft/LCD-show /tmp/lcd
+git clone https://github.com/goodtft/LCD-show /tmp/lcd
 chmod +x /tmp/lcd/LCD35-show
 
 # run the setup script

@@ -3,4 +3,4 @@
 @xscreensaver -no-splash
 point-rpi
 
-@bash /home/pi/startup.sh
+@bash /home/pi/defpi/config/startup.sh
