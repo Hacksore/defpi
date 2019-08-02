@@ -14,6 +14,10 @@ sudo apt-get -y update > /dev/null
 
 sudo apt-get -y install chromium git curl hostapd dnsmasq > /dev/null
 
+if [ "$RUNNING_ON_PI" ]; then
+  ln -s /usr/bin/chromium /usr/bin/chromium-browser
+fi
+
 curl -sL https://deb.nodesource.com/setup_12.x | sudo bash - > /dev/null
 sudo apt-get install -y nodejs > /dev/null
 
@@ -37,3 +41,8 @@ if [ "$RUNNING_ON_PI" ]; then
 else
   cat "config/autostart" > "/etc/xdg/lxsession/LXDE/autostart"    
 fi
+
+# install deps
+cd /home/pi/defpi/server && npm install
+
+sudo /sbin/reboot
