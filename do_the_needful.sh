@@ -8,7 +8,8 @@ else
   echo "Running on debian" 
 fi
 
-touch /var/log/defpi.log
+sudo touch /var/log/defpi.log
+sudo chown pi /var/log/defpi.log
 
 echo "============================
 DEFPI, SHOW ME WHAT YOU GOT!
@@ -36,9 +37,10 @@ sudo apt-get -y update >> /var/log/defpi.log
 sudo apt-get -y install git curl hostapd dnsmasq >> /var/log/defpi.log
 
 if [ ! -z "$RUNNING_ON_PI" ]; then
-  echo "Installing chromium cause we are ond debian"
-  sudo apt-get -y install chromium >> /var/log/defpi.log
-  sudo ln -s /usr/bin/chromium /usr/bin/chromium-browser
+  # TODO: fix, this is happening on raspbian
+  # echo "Installing chromium cause we are ond debian"
+  # sudo apt-get -y install chromium >> /var/log/defpi.log
+  # sudo ln -s /usr/bin/chromium /usr/bin/chromium-browser
 fi
 
 echo "Installing node"
@@ -46,7 +48,7 @@ curl -sL https://deb.nodesource.com/setup_12.x | sudo bash - >> /var/log/defpi.l
 sudo apt-get install -y nodejs >> /var/log/defpi.log
 
 echo "Installing forever"
-npm install -g forever >> /var/log/defpi.log
+sudo npm install -g forever >> /var/log/defpi.log
 
 # stop screen sleep
 sudo sed -i 's/xserver-command=X/xserver-command=X -s 0 dpms/g' /etc/lightdm/lightdm.conf
@@ -76,8 +78,10 @@ echo "Installing backend dependencies"
 cd /home/pi/defpi/server && npm install >> /var/log/defpi.log
 
 # install deps && build the app
-echo "Installing front dependencies and building"
-cd /home/pi/defpi/client && npm install && npm run build >> /var/log/defpi.log
+echo "Installing front end dependencies and building"
+cd /home/pi/defpi/client
+npm install >> /var/log/defpi.log
+npm run build >> /var/log/defpi.log
 
 # make startup script executable
 chmod +x /home/pi/defpi/config/startup.sh
@@ -89,10 +93,14 @@ sudo ifdown wlan0 >> /var/log/defpi.log
 sudo systemctl stop hostapd >> /var/log/defpi.log
 sudo systemctl stop dnsmasq >> /var/log/defpi.log
 
-cat "config/hostapd.conf" | sudo tee /etc/hostapd/hostapd.conf
-cat "config/dnsmasq.conf" | sudo tee -a /etc/dnsmasq.conf
-echo "denyinterfaces wlan0" | sudo tee -a /etc/dhcpcd.conf
-cat "config/interfaces" | sudo tee /etc/network/interfaces
+cat config/hostapd.conf | sudo tee /etc/hostapd/hostapd.conf >> /var/log/defpi.log
+cat config/dnsmasq.conf | sudo tee -a /etc/dnsmasq.conf >> /var/log/defpi.log
+echo "denyinterfaces wlan0" | sudo tee -a /etc/dhcpcd.conf >> /var/log/defpi.log
+cat config/interfaces | sudo tee /etc/network/interfaces >> /var/log/defpi.log
+
+sudo systemctl unmask hostapd >> /var/log/defpi.log
+sudo systemctl enable hostapd >> /var/log/defpi.log
+sudo systemctl start hostapd >> /var/log/defpi.log
 
 # don't reboot until script is working 100% 😎
 #sudo /sbin/reboot
