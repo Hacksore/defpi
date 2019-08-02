@@ -58,9 +58,10 @@ sudo ifdown wlan0
 sudo systemctl stop hostapd
 sudo systemctl stop dnsmasq
 
-sudo cat "config/hostapd.conf" > /etc/hostapd/hostapd.conf
-sudo cat "config/dnsmasq.conf" >> /etc/dnsmasq.conf
-sudo cat "config/interfaces" > /etc/network/interfaces
+cat "config/hostapd.conf" | sudo tee /etc/hostapd/hostapd.conf
+cat "config/dnsmasq.conf" | sudo tee -a /etc/dnsmasq.conf
+echo "denyinterfaces wlan0" | sudo tee -a /etc/dhcpcd.conf
+cat "config/interfaces" | sudo tee /etc/network/interfaces
 
 # don't reboot until script is working 100% 😎
 #sudo /sbin/reboot
