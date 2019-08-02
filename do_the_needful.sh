@@ -15,7 +15,7 @@ sudo apt-get -y update > /dev/null
 sudo apt-get -y install chromium git curl hostapd dnsmasq > /dev/null
 
 if [ ! -z "$RUNNING_ON_PI" ]; then
-  ln -s /usr/bin/chromium /usr/bin/chromium-browser
+  sudo ln -s /usr/bin/chromium /usr/bin/chromium-browser
 fi
 
 curl -sL https://deb.nodesource.com/setup_12.x | sudo bash - > /dev/null
