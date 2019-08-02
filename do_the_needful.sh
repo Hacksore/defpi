@@ -51,4 +51,5 @@ cd /home/pi/defpi/client && npm run build
 # make startup script executable
 chmod +x /home/pi/defpi/config/startup.sh
 
-sudo /sbin/reboot
+# don't reboot until script is working 100% 😎
+#sudo /sbin/reboot
