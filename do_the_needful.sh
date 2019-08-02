@@ -59,8 +59,10 @@ if [ "$RUNNING_ON_PI" ]; then
   git clone https://github.com/goodtft/LCD-show /tmp/lcd >> /var/log/defpi.log
   chmod +x /tmp/lcd/LCD35-show
 
+  # script needs dot sourced stuffz
+  cd /tmp/lcd/LCD35-show
   # run the setup script
-  sudo bash /tmp/lcd/LCD35-show 90 >> /var/log/defpi.log
+  sudo bash LCD35-show 90 >> /var/log/defpi.log
 fi
 
 # setup auto start
