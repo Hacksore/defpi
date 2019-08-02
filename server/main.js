@@ -3,8 +3,8 @@ const app = express();
 const port = 3000;
 const path = require('path');
 
-const connectedClients = [];
-const { exec } = require('child_process');
+let connectedClients = [];
+const { exec, execSync } = require('child_process');
 app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.get('/', (req, res) => {
@@ -24,17 +24,24 @@ GOTEM                    ether   f0:f0:f0:f0:f0:f0   C                     wlan0
 
 function scanForClients() {
   connectedClients = [];
-  exec('arp', response => {
-    const lines = response.split('\n').splice(1, lines.length);
+  exec('arp', (err, stdout, stderr) => {
+    let lines = stdout.split('\n');
+    lines = lines.splice(1, lines.length);
 
     lines.forEach(item => {
-      const client = response.split(/(\s+)/).filter(item => item.trim().length > 0);
-      connectedClients.push({
-        hostname: client[0],
-        address: client[2]
-      });
+      const client = item.split(/(\s+)/).filter(item => item.trim().length > 0);
+
+      if (item[0] !== undefined) {
+        connectedClients.push({
+          hostname: client[0],
+          address: client[2]
+        });
+      }
     });
-    console.log(stdout);
+
+    console.log(connectedClients);
+    // after we gather all clients clear the arp table
+    execSync('sudo ip -s -s neigh flush all');
   });
 }
 
