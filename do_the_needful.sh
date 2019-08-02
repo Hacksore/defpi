@@ -95,8 +95,8 @@ sudo ifdown wlan0 >> /var/log/defpi.log
 sudo systemctl stop hostapd >> /var/log/defpi.log
 sudo systemctl stop dnsmasq >> /var/log/defpi.log
 
-cat config/hostapd.conf | sudo tee /etc/hostapd/hostapd.conf >> /var/log/defpi.log
-cat config/dnsmasq.conf | sudo tee -a /etc/dnsmasq.conf >> /var/log/defpi.log
+cat /home/pi/defpi/config/hostapd.conf | sudo tee /etc/hostapd/hostapd.conf >> /var/log/defpi.log
+cat /home/pi/defpi/config/dnsmasq.conf | sudo tee -a /etc/dnsmasq.conf >> /var/log/defpi.log
 echo "denyinterfaces wlan0" | sudo tee -a /etc/dhcpcd.conf >> /var/log/defpi.log
 cat config/interfaces | sudo tee /etc/network/interfaces >> /var/log/defpi.log
 
