@@ -53,5 +53,12 @@ cd /home/pi/defpi/client && npm install && npm run build
 # make startup script executable
 chmod +x /home/pi/defpi/config/startup.sh
 
+# setup wifi 
+sudo ifdown wlan0
+
+cat "config/hostapd.conf" > /etc/hostapd/hostapd.conf
+cat "config/dnsmasq.conf" >> /etc/dnsmasq.conf
+cat "config/interfaces" > /etc/network/interfaces
+
 # don't reboot until script is working 100% 😎
 #sudo /sbin/reboot
