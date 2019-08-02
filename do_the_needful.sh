@@ -45,4 +45,10 @@ fi
 # install deps
 cd /home/pi/defpi/server && npm install
 
+# build the app
+cd /home/pi/defpi/client && npm run build
+
+# make startup script executable
+chmod +x /home/pi/defpi/config/startup.sh
+
 sudo /sbin/reboot
