@@ -36,12 +36,12 @@ DEFPI, SHOW ME WHAT YOU GOT!
 sudo apt-get -y update >> /var/log/defpi.log
 sudo apt-get -y install git curl hostapd dnsmasq >> /var/log/defpi.log
 
-if [ ! -z "$RUNNING_ON_PI" ]; then
-  # TODO: fix, this is happening on raspbian
+# TODO: fix, this is happening on raspbian
+#if [ ! -z "$RUNNING_ON_PI" ]; then
   # echo "Installing chromium cause we are ond debian"
   # sudo apt-get -y install chromium >> /var/log/defpi.log
   # sudo ln -s /usr/bin/chromium /usr/bin/chromium-browser
-fi
+#fi
 
 echo "Installing node"
 curl -sL https://deb.nodesource.com/setup_12.x | sudo bash - >> /var/log/defpi.log
