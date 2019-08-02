@@ -1,14 +1,27 @@
 #!/bin/bash
 
 # this script should do everything to setup the pi 
-
 sudo apt -y update
+
+# Raspbian has this but stock debian does not have this installed so we do this
+sudo apt -y install chromium-browser
 
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 sudo apt install -y nodejs
 
 npm install -g forever
 
-# TODO: make this happen in the ldxd autostart via script?
-# DISPLAY=:0 chromium-browser --kiosk --incognito http://localhost:3000
-# forever start /home/pi/defpi/
+# install screen
+git clone git@github.com:goodtft/LCD-show.git /tmp/lcd
+
+chmod +x /tmp/lcd/LCD35-show
+sudo bash /tmp/lcd/LCD35-show
+
+sudo apt install -y hostapd
+sudo apt install -y dnsmasq
+
+sudo systemctl stop hostapd
+sudo systemctl stop dnsmasq
+
+# setup auto start
+cat "config/autostart" > "/etc/xdg/lxsession/LXDE-pi/autostart"
