@@ -14,7 +14,7 @@ class App extends PureComponent {
   }
 
   fetchData = event => {
-    fetch('http://localhost:1337/clients')
+    fetch('/clients')
       .then(response => response.json())
       .then((response) => {
         this.setState({

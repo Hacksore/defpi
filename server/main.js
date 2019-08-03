@@ -22,43 +22,15 @@ app.get('/clients', (req, res) => {
   res.json(connectedClients);
 });
 
-function detminePlaform(input) {
-  const vendor = input.toLowerCase();
-
-  if (vendor.includes('asus')) {
-    return 'windows';
-  }
-  if (vendor.includes('htc')) {
-    return 'windows';
-  }
-  if (vendor.includes('intel')) {
-    return 'windows';
-  }
-  else if (vendor.includes('mac')) {
-    return 'mac';
-  }
-  else if (vendor.includes('apple')) {
-    return 'apple';
-  }
-  else if (vendor.includes('google')) {
-    return 'linux';
-  } else {
-    // all hackers use linux
-    return 'linux'
-  }
-  
-}
-
-
 function scanForClients() {
   connectedClients = [];
-  exec('sudo arp-scan --interface=en0 192.168.86.0/24', (err, stdout, stderr) => {
+  exec('sudo arp-scan --localnet --interface=wlan0', (err, stdout, stderr) => {
     let lines = stdout.split('\n');
     lines = lines.splice(2, lines.length-5);
 
     lines.forEach(item => {
       const client = item.split('\t').filter(item => item[1] !== undefined);
-      //console.log(client);
+
       if (item[0] !== undefined) {
         connectedClients.push({
           ip: client[0],
@@ -76,7 +48,7 @@ function scanForClients() {
 }
 
 // we are going to be on battery so keeping this scan limited is ideal
-setInterval(scanForClients, 1000 * 300); // 5 minutes per scan
+setInterval(scanForClients, 1000 * 30); // 30 seconds for now
 scanForClients();
 
 app.listen(port);
