@@ -45,18 +45,6 @@ sudo npm install -g forever >> /var/log/defpi.log
 # stop screen sleep
 sudo sed -i 's/xserver-command=X/xserver-command=X -s 0 dpms/g' /etc/lightdm/lightdm.conf
 
-# install LCD screen
-if [ "$RUNNING_ON_PI" ]; then
-  echo "Installing LCD drivers"
-  git clone https://github.com/goodtft/LCD-show /home/pi/lcd >> /var/log/defpi.log
-  chmod +x /home/pi/lcd/LCD35-show
-
-  # script needs dot sourced stuffz
-  cd /home/pi/lcd
-  # run the setup script
-  sudo bash LCD35-show 90 >> /var/log/defpi.log
-fi
-
 # setup auto start
 echo "Updating autostart config"
 if [ "$RUNNING_ON_PI" ]; then
@@ -96,5 +84,14 @@ sudo systemctl unmask hostapd >> /var/log/defpi.log
 sudo systemctl enable hostapd >> /var/log/defpi.log
 sudo systemctl start hostapd >> /var/log/defpi.log
 
-# don't reboot until script is working 100% 😎
-#sudo /sbin/reboot
+# install LCD screen
+if [ "$RUNNING_ON_PI" ]; then
+  echo "Installing LCD drivers"
+  git clone https://github.com/goodtft/LCD-show /home/pi/lcd >> /var/log/defpi.log
+  chmod +x /home/pi/lcd/LCD35-show
+
+  # script needs dot sourced stuffz
+  cd /home/pi/lcd
+  # run the setup script
+  sudo bash LCD35-show 90 >> /var/log/defpi.log
+fi
