@@ -60,10 +60,10 @@ fi
 # setup auto start
 echo "Updating autostart config"
 if [ "$RUNNING_ON_PI" ]; then
-  contents=$(cat "config/autostart" | sed "s/:PROFILE/LXDE-pi/g")
+  contents=$(cat /home/pi/defpi/config/autostart | sed "s/:PROFILE/LXDE-pi/g")
   echo "$contents" | sudo tee "/etc/xdg/lxsession/LXDE-pi/autostart"
 else
-  contents=$(cat "config/autostart" | sed "s/:PROFILE/LXDE/g")
+  contents=$(cat /home/pi/defpi/config/autostart | sed "s/:PROFILE/LXDE/g")
   echo "$contents" | sudo tee "/etc/xdg/lxsession/LXDE/autostart"    
 fi
 
