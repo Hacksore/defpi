@@ -1,0 +1,32 @@
+.terminal {
+  width: 290px;
+  height: 200px;
+  background: rgb(36, 36, 36);
+  text-align: left;
+  padding: 8px 8px 8px 8px;
+  overflow-y: scroll;
+}
+
+.line {
+  color: #fff;
+  margin: 0;
+  padding: 2px 0 2px 0;
+  font-family: Verdana;
+}
+
+.prompt {
+
+}
+
+.user {
+  color: rgb(113, 250, 79);
+}
+.at {
+  color: #fbfffa;
+}
+.host {
+  color: rgb(255, 249, 86);
+}
+.hash {
+  color: #fbfffa;
+}

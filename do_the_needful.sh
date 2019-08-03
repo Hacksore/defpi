@@ -27,7 +27,7 @@ echo "============================
 
 # this script should do everything to setup the pi 
 sudo apt-get -y update >> /var/log/defpi.log
-sudo apt-get -y install git curl hostapd dnsmasq >> /var/log/defpi.log
+sudo apt-get -y install git curl hostapd dnsmasq arp-scan >> /var/log/defpi.log
 
 if [ -z "$RUNNING_ON_PI" ]; then
   echo "Installing chromium cause we are debian"

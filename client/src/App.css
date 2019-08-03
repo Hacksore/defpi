@@ -20,7 +20,13 @@ body, html {
 }
 
 .section {
-  margin: 0 8px 12px 8px;
+  margin: 0 8px 0 8px;
+  font-size: 34px;
+}
+
+.info h2 {
+  margin: 0 0 12px 0;
+  padding: 0;
 }
 
 .section p {
@@ -31,15 +37,13 @@ body, html {
 }
 
 .section img {
-  width: 48px;
-  height: 48px;
+  width: 80px;
+  height: 80px;
+  animation: app-logo-spin 2s infinite;
+  transform-origin: 50% 100% 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+@keyframes app-logo-spin {
+  0%, 100%{ transform: rotate(-8deg);}
+  50%{ transform: rotate(6deg); }
 }

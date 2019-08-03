@@ -1,52 +1,59 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import './App.css';
-import Terminal from 'terminal-in-react';
-import linux from './img/icon/linux.png';
-import win from './img/icon/windows.png';
-import mac from './img/icon/mac.png';
+import Terminal from './terminal/terminal.component';
+import hacker from './img/icon/hacker.png';
 
-function App() {
-  return (
-    <div className="app">
+class App extends PureComponent {
 
-      <div className="test">
-        <h1>Hackers Connected</h1>     
+  constructor() {
+    super();
+
+    this.state = {
+      clients: []
+    }
+  }
+
+  fetchData = event => {
+    fetch('http://localhost:1337/clients')
+      .then(response => response.json())
+      .then((response) => {
+        this.setState({
+         clients: response
+        });
+      });
+  }
+
+  componentWillMount() {
+    this.fetchData();
+
+    setInterval(() => {
+      this.fetchData();
+    }, 1000 * 30);
+  }
+
+  render() {
+    const { clients } = this.state;
+
+    return (
+      <div className="app">
+
+        <div className="connection-info">
+          <h2>SSID: NoHakePls</h2>
+        </div>
+  
+        <div className="section">
+          <p>{clients.length}</p>
+          <img src={hacker} alt="hackers"/>
+        </div>
+        <div className="info">
+          <h2>HACKERS CONNECTED</h2>
+        </div>
+
+        <Terminal/>
+         
       </div>
-
-      <div className="connection-info">
-        <h4>SSID: NoHakePls</h4>
-      </div>
-
-      <header className="header">
-        <div className="section">
-          <p>32</p>     
-          <img src={win} alt="win"/>
-        </div>
-
-        <div className="section">
-          <p>32</p>
-          <img src={mac} alt="mac"/>
-        </div>
-
-        <div className="section">
-          <p>32</p>
-          <img src={linux} alt="linux"/>
-        </div>
-
-      </header>
-
-      <Terminal
-        color='#fff'
-        allowTabs={false}
-        promptSymbol="hacksore@defcon "
-        hideTopBar={true}
-        backgroundColor='black'
-        
-        barColor='black'
-        style={{ fontWeight: "bold", fontSize: "1em" }}
-      />
-    </div>
-  );
+    )
+  }
 }
 
 export default App;
