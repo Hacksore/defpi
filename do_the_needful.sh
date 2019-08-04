@@ -42,9 +42,6 @@ sudo apt-get install -y nodejs >> /var/log/defpi.log
 echo "Installing forever"
 sudo npm install -g forever >> /var/log/defpi.log
 
-# stop screen sleep
-sudo sed -i 's/#xserver-command=X/xserver-command=X -s 0 dpms/g' /etc/lightdm/lightdm.conf
-
 # install LCD screen
 if [ "$RUNNING_ON_PI" ]; then
   echo "Installing LCD drivers"
@@ -98,7 +95,9 @@ sudo systemctl start hostapd >> /var/log/defpi.log
 
 # pi tweaks
 echo "dtoverlay=pi3-disable-bt" | sudo tee -a /boot/config.txt
+echo "consoleblank=0" | sudo tee -a /boot/cmdline.txt
 sudo systemctl disable bluetooth
+sudo sed -i 's/#xserver-command=X/xserver-command=X -s 0 dpms/g' /etc/lightdm/lightdm.conf
 
 # don't reboot until script is working 100% 😎
 #sudo /sbin/reboot
