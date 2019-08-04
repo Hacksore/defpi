@@ -11,12 +11,12 @@ class Terminal extends PureComponent {
     this.state = {
       lines: [
         {color: '#fff', message: '<strong>[DEFPI]</strong>'},
-        {color: '#fff', message: 'An opensource raspiberry pi badge'},
+        {color: '#fff', message: 'An opensource raspberry pi badge'},
         {color: '#fff', message: ''},
-        {color: '#fff', message: 'git remote -v'},
+        {color: '#fff', message: '# git remote -v'},
         {color: '#fff', message: 'github.com/Hacksore/defpi'},
         {color: '#fff', message: ''},
-        {color: '#fff', message: 'whoami'},
+        {color: '#fff', message: '# whoami'},
         {color: '#fff', message: '<div class="me">Sean "Hacksore" Boult</div>'},
         {color: '#fff', message: ''}
       ]

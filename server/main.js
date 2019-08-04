@@ -5,12 +5,14 @@ const oui = require('oui');
 const { exec } = require('child_process');
 let port = 1337;
 
-if (process.env.NODE_ENV !== 'production') {
+let arpCommand = 'sudo arp-scan --localnet --interface=wlan0'
+if (process.env.NODE_ENV === 'development') {
   console.log('We are in dev mode 😎')
   port = 8080;
-}
 
-let connectedClients = [];
+  // the old macbook haz different interface
+  arpCommand = 'sudo arp-scan --localnet --interface=en0'
+}
 
 app.use(express.static(path.join(__dirname, '../client/build')));
 
@@ -24,36 +26,50 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/clients', (req, res) => {
-  res.json(connectedClients);
+app.get('/clients', async (req, res) => {
+
+  const clients = await scanForClients();
+  res.json(clients);
+});
+
+// TODO: make ssid random?
+app.get('/ssid', (req, res) => {
+  res.json({});
 });
 
 function scanForClients() {
-  connectedClients = [];
-  
-  const command = 'sudo arp-scan --localnet --interface=wlan0';
-  exec(command, (err, stdout, stderr) => {
 
-    let lines = stdout.split('\n');    
-    lines = lines.splice(2, lines.length-6);
+  return new Promise((resolve, reject) => {
+    const connectedClients = [];
     
-    lines.forEach(item => {
-      const client = item.split(/(\s+)/).filter(item => item.trim().length > 0);
+    exec(arpCommand, (err, stdout, stderr) => {
 
-      if (item[0] !== undefined) {
-        connectedClients.push({
-          ip: client[0],
-          mac: client[1],
-          ouiInfo: oui(client[1]).split('\n')
-        });
-      }
+      let lines = stdout.split('\n');    
+      lines = lines.splice(2, lines.length-6);
+      
+      lines.forEach(item => {
+        const client = item.split(/(\s+)/).filter(item => item.trim().length > 0);
+        console.log(client);
+        if (item[0] !== undefined) {
+          const info = {
+            ip: client[0],
+            mac: client[1]
+          }
+
+          try {
+            info.vendor = oui(client[1]).split('\n')[0];
+          } catch (e) {
+            info.vendor = 'Anonymous'
+          }
+
+          connectedClients.push(info);
+        }
+      });
+
+      resolve(connectedClients);
+
     });
-
   });
 }
-
-// we are going to be on battery so keeping this scan limited is ideal
-setInterval(scanForClients, 1000 * 30); // 30 seconds for now
-scanForClients();
 
 app.listen(port);
