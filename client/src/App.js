@@ -67,7 +67,7 @@ class App extends PureComponent {
         </div>
 
         <div className="section">
-          <img src={hacker} alt="hackers"/>
+          <img src={hacker} onClick={window.location.reload} alt="hackers"/>
           <div className="info">
             <h1>{clients.length} CONNECTED</h1>
           </div>
