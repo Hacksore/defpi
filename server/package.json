@@ -11,6 +11,5 @@
   "dependencies": {
     "express": "^4.17.1",
     "oui": "^10.0.14"
-  },
-  "proxy": "http://localhost:8080"
+  }
 }

@@ -5,6 +5,7 @@ body, html {
 }
 
 .app {
+  position: relative;
   text-align: center;
   width: 320px;
   height: 480px;
@@ -19,14 +20,15 @@ body, html {
   color: white;
 }
 
-.section {
-  margin: 0 8px 0 8px;
-  font-size: 34px;
-}
-
-.info h2 {
+.info h1 {
   margin: 0 0 12px 0;
   padding: 0;
+}
+
+.section {
+  margin: 0 8px 0 8px;
+  padding: 46px 0 0 0;
+  height: 176px;
 }
 
 .section p {
@@ -37,13 +39,75 @@ body, html {
 }
 
 .section img {
-  width: 80px;
-  height: 80px;
-  animation: app-logo-spin 2s infinite;
+  width: 112px;
+  height: 112px;
+  animation: swaying 2s infinite;
   transform-origin: 50% 100% 0;
 }
 
-@keyframes app-logo-spin {
+.loading-wrapper {
+  position: absolute;
+  left: 0;
+  top: 42px;
+  width: 320px;
+  z-index: 999;
+  padding: 2px 0 2px 0;
+  font-weight: bold;
+  background: #ecf75b;
+}
+
+.connection-info {
+  background: #8662c9;
+  text-shadow: 1px 1px #000;
+  padding: 0 0 2px 0;
+  color: #fff;
+}
+
+.connection-info h1 {
+  padding: 0;
+  margin: 0;
+}
+
+.img {
+  top: 28px;
+  width: 46px;
+  width: 46px;
+  position: absolute;
+  z-index: 999;
+  animation-duration: 500ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear; 
+}
+
+.img-left {
+  animation-name: spin;
+  left: 0;
+}
+
+.img-right {
+  right: 0;
+  animation-name: spin-reverse;
+}
+
+@keyframes swaying {
   0%, 100%{ transform: rotate(-8deg);}
   50%{ transform: rotate(6deg); }
+}
+
+@keyframes spin {
+  from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform:rotate(360deg);
+  }
+}
+
+@keyframes spin-reverse {
+  from {
+    transform:rotate(360deg);
+  }
+  to {
+    transform:rotate(0deg);    
+  }
 }

@@ -1,11 +1,17 @@
 const express = require('express')
 const app = express();
-const port = 1337;
 const path = require('path');
 const oui = require('oui');
+const { exec } = require('child_process');
+let port = 1337;
+
+if (process.env.NODE_ENV !== 'production') {
+  console.log('We are in dev mode 😎')
+  port = 8080;
+}
 
 let connectedClients = [];
-const { exec, execSync, spawn } = require('child_process');
+
 app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.use(function(req, res, next) {
@@ -24,26 +30,25 @@ app.get('/clients', (req, res) => {
 
 function scanForClients() {
   connectedClients = [];
-  exec('sudo arp-scan --localnet --interface=wlan0', (err, stdout, stderr) => {
-    let lines = stdout.split('\n');
-    lines = lines.splice(2, lines.length-5);
+  
+  const command = 'sudo arp-scan --localnet --interface=wlan0';
+  exec(command, (err, stdout, stderr) => {
 
+    let lines = stdout.split('\n');    
+    lines = lines.splice(2, lines.length-6);
+    
     lines.forEach(item => {
-      const client = item.split('\t').filter(item => item[1] !== undefined);
+      const client = item.split(/(\s+)/).filter(item => item.trim().length > 0);
 
       if (item[0] !== undefined) {
         connectedClients.push({
           ip: client[0],
           mac: client[1],
-          vendor: client[2],
-          ouiVendor: oui(client[1]).split('\n')
+          ouiInfo: oui(client[1]).split('\n')
         });
       }
     });
 
-    console.log(connectedClients);
-    // after we gather all clients clear the arp table
-    //execSync('sudo ip -s -s neigh flush all');
   });
 }
 

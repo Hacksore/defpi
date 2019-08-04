@@ -96,5 +96,9 @@ sudo systemctl unmask hostapd >> /var/log/defpi.log
 sudo systemctl enable hostapd >> /var/log/defpi.log
 sudo systemctl start hostapd >> /var/log/defpi.log
 
+# pi tweaks
+echo "dtoverlay=pi3-disable-bt" | sudo tee -a /boot/config.txt
+sudo systemctl disable bluetooth
+
 # don't reboot until script is working 100% 😎
 #sudo /sbin/reboot

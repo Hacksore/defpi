@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import './App.css';
 import Terminal from './terminal/terminal.component';
 import hacker from './img/icon/hacker.png';
+import troll from './img/icon/troll.png';
 
 class App extends PureComponent {
 
@@ -9,47 +10,71 @@ class App extends PureComponent {
     super();
 
     this.state = {
-      clients: []
+      clients: [],
+      scanning: false,
+      scanInterval: 60,
+      randomText: [
+        'scanning network',
+        'hacking your bank account',
+        'sending a tweet',
+        'I am a M$ technician',
+        'Hello world',
+        'PHP sucks ballz',
+        '#badgelife',
+        'GOTEM',
+        'This is bad, but good',
+        'doing an ARP scan',
+      ]
     }
   }
 
-  fetchData = event => {
-    fetch('/clients')
-      .then(response => response.json())
-      .then((response) => {
-        this.setState({
-         clients: response
-        });
-      });
+  fetchData = async (event) => {
+    this.setState({ scanning: true });
+
+    const response = await fetch('/clients');
+    const json = await response.json();
+
+    this.setState({ clients: json });
+
+    setTimeout(() => {
+      this.setState({ scanning: false });
+    }, 3000);
+
   }
 
   componentWillMount() {
     this.fetchData();
 
-    setInterval(() => {
-      this.fetchData();
-    }, 1000 * 30);
+    setInterval(this.fetchData, 1000 * this.state.scanInterval);
   }
 
   render() {
-    const { clients } = this.state;
-
+    const { clients, scanning, randomText} = this.state;
+    const randomString = randomText[Math.floor(Math.random() * randomText.length)];
     return (
       <div className="app">
 
+        { scanning && (
+          <div className="loading-wrapper">
+            {randomString}
+            <img className="img img-left" src={troll} alt="troll"/> 
+            <img className="img img-right" src={troll} alt="troll"/> 
+          </div>
+        )}
+
         <div className="connection-info">
-          <h2>SSID: NoHakePls</h2>
+          <h1>SSID: NoHakePls</h1>
         </div>
-  
+
         <div className="section">
-          <p>{clients.length}</p>
           <img src={hacker} alt="hackers"/>
-        </div>
-        <div className="info">
-          <h2>HACKERS CONNECTED</h2>
+          <div className="info">
+            <h1>{clients.length} CONNECTED</h1>
+          </div>
         </div>
 
         <Terminal/>
+
          
       </div>
     )

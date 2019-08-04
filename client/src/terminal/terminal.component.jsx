@@ -10,15 +10,15 @@ class Terminal extends PureComponent {
 
     this.state = {
       lines: [
-        {color: '#fff', message: 'Waht the fuck mat this is a really long one that it has to wrap or else'},
-        {color: '#fff', message: 'this is a test'},
-        {color: '#fff', message: 'variying line length'},
-        {color: '#fff', message: 'variying line length'},
-        {color: '#fff', message: 'variying line length'},
-        {color: '#fff', message: 'variying line length'},
-        {color: '#fff', message: 'variying line length'},
-        {color: '#fff', message: 'variying line length'},
-        {color: '#fff', message: 'newest message'}
+        {color: '#fff', message: '<strong>[DEFPI]</strong>'},
+        {color: '#fff', message: 'An opensource raspiberry pi badge'},
+        {color: '#fff', message: ''},
+        {color: '#fff', message: 'git remote -v'},
+        {color: '#fff', message: 'github.com/Hacksore/defpi'},
+        {color: '#fff', message: ''},
+        {color: '#fff', message: 'whoami'},
+        {color: '#fff', message: '<div class="me">Sean "Hacksore" Boult</div>'},
+        {color: '#fff', message: ''}
       ]
     }
   }
@@ -41,13 +41,14 @@ class Terminal extends PureComponent {
       <div className="terminal" ref={this.ref}>        
         
         {lines.map((line, index) => {
-          return <div key={index} className="line">{line.message}</div>
+          return <div key={index} dangerouslySetInnerHTML={{ __html: line.message }} className="line"></div>
         })}
         <div className="prompt">
           <span className="user">Hacksore</span>
           <span className="at">@</span>
           <span className="host">defcon</span>
-          <span className="hash">#</span>
+          <span className="hash">$</span>
+          <span className="caret"></span>
         </div>
       </div>
     )

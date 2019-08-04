@@ -1,5 +1,5 @@
 .terminal {
-  width: 290px;
+  width: 100%;
   height: 200px;
   background: rgb(36, 36, 36);
   text-align: left;
@@ -12,21 +12,45 @@
   margin: 0;
   padding: 2px 0 2px 0;
   font-family: Verdana;
+  min-height: 12px;
 }
 
 .prompt {
-
+  font-weight: bold;
 }
 
 .user {
   color: rgb(113, 250, 79);
 }
+
 .at {
-  color: #fbfffa;
+  color: #e6e6e6;
 }
+
 .host {
   color: rgb(255, 249, 86);
 }
+
 .hash {
   color: #fbfffa;
+}
+
+.me {
+  font-weight: bold;
+}
+
+.caret {
+  background-color: #fbfffa;
+  display: inline-block;
+  margin: 0 0 0 5px;
+  width: 6px;
+  height: 12px;
+  animation: blink-text 0.8s infinite;
+}
+
+
+@keyframes blink-text {
+  0%{     background: rgb(255, 255, 255);    }
+  50%{    background: transparent; }
+  100%{   background: rgb(255, 255, 255);    }
 }
