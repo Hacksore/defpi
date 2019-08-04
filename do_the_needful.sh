@@ -43,7 +43,7 @@ echo "Installing forever"
 sudo npm install -g forever >> /var/log/defpi.log
 
 # stop screen sleep
-sudo sed -i 's/xserver-command=X/xserver-command=X -s 0 dpms/g' /etc/lightdm/lightdm.conf
+sudo sed -i 's/#xserver-command=X/xserver-command=X -s 0 dpms/g' /etc/lightdm/lightdm.conf
 
 # install LCD screen
 if [ "$RUNNING_ON_PI" ]; then

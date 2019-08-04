@@ -3,4 +3,5 @@
 @xscreensaver -no-splash
 point-rpi
 
+@unclutter -idle 0
 @bash /home/pi/defpi/config/startup.sh
