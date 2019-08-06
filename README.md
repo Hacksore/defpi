@@ -19,5 +19,5 @@ A silly badge for defcon 2019 built for a Raspberry PI
 
 
 # Pics
+![badge](./pics/badge.jpg)
 ![scanning](./pics/scanning.jpg)
-![connected](./pics/connected.jpg)
