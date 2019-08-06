@@ -3,8 +3,9 @@
   height: 208px;
   background: rgb(36, 36, 36);
   text-align: left;
-  padding: 8px 8px 8px 8px;
-  overflow-y: scroll;
+  padding: 6px 8px 8px 6px;
+  overflow-y: auto;
+  overflow: hidden;
 }
 
 .line {

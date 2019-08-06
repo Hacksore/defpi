@@ -51,7 +51,7 @@ if [ "$RUNNING_ON_PI" ]; then
   # script needs dot sourced stuffz
   cd /home/pi/lcd
   # run the setup script
-  sudo bash LCD35-show 90 >> /var/log/defpi.log
+  sudo bash LCD35-show 270 >> /var/log/defpi.log
 fi
 
 # setup auto start

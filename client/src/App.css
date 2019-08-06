@@ -24,14 +24,18 @@ body, html {
 }
 
 .info h1 {
-  margin: 0 0 12px 0;
+  margin: 0 0 2px 0;
   padding: 0;
 }
 
 .section {
-  margin: 0 8px 0 8px;
-  padding: 46px 0 0 0;
-  height: 176px;
+  position: relative;
+  width: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 220px;
 }
 
 .section p {
@@ -90,6 +94,23 @@ body, html {
 .img-right {
   right: 0;
   animation-name: spin-reverse;
+}
+
+.vendor-info {
+  position: absolute;
+  height: 130px;
+  top: 28px;
+  left: 6px;
+  overflow-y: scroll;
+  width: 320px;
+  z-index: 0;
+}
+
+.vendor {
+  font-weight: bold;
+  font-size: 14px;
+  text-align: left;
+  color: #272627;
 }
 
 @keyframes swaying {

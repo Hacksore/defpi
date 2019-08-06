@@ -49,7 +49,7 @@ function scanForClients() {
       
       lines.forEach(item => {
         const client = item.split(/(\s+)/).filter(item => item.trim().length > 0);
-        console.log(client);
+
         if (item[0] !== undefined) {
           const info = {
             ip: client[0],

@@ -3,6 +3,7 @@ import './App.css';
 import Terminal from './terminal/terminal.component';
 import hacker from './img/icon/hacker.png';
 import troll from './img/icon/troll.png';
+import _ from 'lodash';
 
 const randomMessages = [
   'scanning network',
@@ -38,8 +39,11 @@ class App extends PureComponent {
       clients: [],
       scanning: false,
       scanInterval: 60,
-      randomText: ''
+      randomText: '',
+      scrollTimer: null
     }
+
+    this.scrollRef = React.createRef();
   }
 
   fetchData = async (event) => {
@@ -49,12 +53,29 @@ class App extends PureComponent {
     const response = await fetch('/clients');
     const json = await response.json();
 
-    this.setState({ clients: json });
+    // don't go to zero on scanning, looks stupid
+    if (this.state.clients.length !== json.length) {
+
+      this.setState({ 
+        clients: json        
+      });
+    }
 
     setTimeout(() => {
       this.setState({ scanning: false });
     }, 3000);
 
+    if (this.state.scrollTimer !== null) {
+      clearInterval(this.state.scrollTimer);
+      this.scrollRef.current.scrollTop = 0;
+    }
+
+    const timer = setInterval(() => {
+      const ele = this.scrollRef.current;
+      ele.scrollTop += 1;
+    }, 50);
+
+    this.setState({ scrollTimer: timer });
   }
 
   componentWillMount() {
@@ -65,17 +86,10 @@ class App extends PureComponent {
 
   render() {
     const { clients, scanning, randomText } = this.state;
-    
+    const uniqueList = _.sortBy(_.uniqBy(clients, 'vendor'), 'vendor');
+
     return (
       <div className="app">
-
-        <div className="vendor-info">
-          { /* TODO: move this to a seperate method so they dont move ever render call */}
-          { /* IS this a feature or a bug lol? def want to dedup the list tho, maybe out a count next to it, like Apple x3 */}
-          {clients.map(client => {
-            return <p style={{position: 'absolute', top: 50 + (Math.random() * 100), left: Math.random() * 320}}>{client.vendor}</p>
-          })}
-        </div>
 
         { scanning && (
           <div className="loading-wrapper">
@@ -90,14 +104,22 @@ class App extends PureComponent {
         </div>
 
         <div className="section">
+          <div className="vendor-info" ref={this.scrollRef}>
+            {uniqueList.map((client, index) => {
+              return <div key={client.ip} className="vendor">{client.vendor} {client.ip}</div>
+            })}
+          </div>
+        
           <img src={hacker} onClick={window.location.reload} alt="hackers"/>
           <div className="info">
-            <h1>{clients.length} CONNECTED</h1>
+            <h1 onClick={this.fetchData}>{clients.length} CONNECTED</h1>
           </div>
         </div>
+    
 
-        <Terminal/>
-
+        <div style={{height: 220, overflow: 'hidden'}} className="terminal">
+          <Terminal/>
+        </div>
          
       </div>
     )
