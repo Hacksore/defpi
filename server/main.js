@@ -14,20 +14,27 @@ if (process.env.NODE_ENV === 'development') {
   arpCommand = 'sudo arp-scan --localnet --interface=en0'
 }
 
-app.use(express.static(path.join(__dirname, '../client/build')));
-
-app.use(function(req, res, next) {
+app.use( (req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
   next();
 });
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
-});
+
+// this was acting like a captive portal, need to invistegate more.
+// app.use( (req, res, next) => {
+//   const ip = req.connection.remoteAddress;
+//   if (ip !== '127.0.0.1') {
+//     console.log('Kindly fuck off', ip);
+//     return res.json({ message: 'Kindly fuck off please!' })
+//   }
+//   next();
+// });
+
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.get('/clients', async (req, res) => {
-
   const clients = await scanForClients();
   res.json(clients);
 });
@@ -72,4 +79,5 @@ function scanForClients() {
   });
 }
 
-app.listen(port);
+// we don't want everyone to access this only the pi
+app.listen(port, '127.0.0.1');
