@@ -34,15 +34,11 @@ class Terminal extends PureComponent {
     this.ref.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
   }
 
-  handleReload = () => {
-    window.location.reload();
-  }
-
   render() {
     const { lines } = this.state;
 
     return (
-      <div className="terminal" ref={this.ref} onClick={this.handleReload}>        
+      <div className="terminal" ref={this.ref}>        
         
         {lines.map((line, index) => {
           return <div key={index} dangerouslySetInnerHTML={{ __html: line.message }} className="line"></div>

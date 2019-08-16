@@ -3,7 +3,8 @@ import './App.css';
 import Terminal from './terminal/terminal.component';
 import hacker from './img/icon/hacker.png';
 import troll from './img/icon/troll.png';
-import _ from 'lodash';
+import HorizontalMarquee from './horizontal-marquee';
+import DebugMenu from './debug/debugmenu.component';
 
 const randomMessages = [
   'scanning network',
@@ -20,11 +21,33 @@ const randomMessages = [
   'uwotm8',
   'Vegas born',
   'I <3 React',
+  'Hacking the matrix',
+  'Agile dev lmao',
+  'sending $.ajax',
   '3.14',
+  'First badge!!!1',
   'Annie dog is watching!',
   '#badgelife',
   'GOTEM',
   'Leeroy Jenkins',
+  'Rekt m9',
+  'Vape Naysh Y\'all',
+  'REEEEEEEEEEEE',
+  'I\'M Pickle Rick',
+  'Lit AF 🔥',
+  'Woke',
+  'Fetching from cloud',
+  'Running nessus scan',
+  'Powered by 💩',
+  'Slack is down',
+  'DefCon is canceled',
+  'My badge is better than yours',
+  'I AM ROOT',
+  'Pixel 4 will suck',
+  'Apple is dumb',
+  'California Fruit',
+  'Drink Bawls',
+  'Doritos & Mtn. Dew',
   'It works on my computer',
   'This is bad, but sooo good',
   'doing an ARP scan',
@@ -37,10 +60,14 @@ class App extends PureComponent {
 
     this.state = {
       clients: [],
+      vendorCounts: [],
       scanning: false,
       scanInterval: 60,
       randomText: '',
-      scrollTimer: null
+      scrollTimer: null,
+      ssidInfo: {
+        network: ''
+      }
     }
 
     this.scrollRef = React.createRef();
@@ -57,7 +84,8 @@ class App extends PureComponent {
     if (this.state.clients.length !== json.length) {
 
       this.setState({ 
-        clients: json        
+        clients: json.clients,    
+        vendorCounts: json.vendorCounts,    
       });
     }
 
@@ -66,6 +94,7 @@ class App extends PureComponent {
     }, 3000);
 
     if (this.state.scrollTimer !== null) {
+      console.log('clearing scroll timer');
       clearInterval(this.state.scrollTimer);
       this.scrollRef.current.scrollTop = 0;
     }
@@ -78,15 +107,20 @@ class App extends PureComponent {
     this.setState({ scrollTimer: timer });
   }
 
-  componentWillMount() {
+  async componentWillMount() {
     this.fetchData();
+
+    const promise = await fetch('/ssid');
+    const json = await promise.json();
+
+    this.setState({ ssidInfo: json });
 
     setInterval(this.fetchData, 1000 * this.state.scanInterval);
   }
 
   render() {
-    const { clients, scanning, randomText } = this.state;
-    const uniqueList = _.sortBy(_.uniqBy(clients, 'vendor'), 'vendor');
+
+    const { clients, vendorCounts, scanning, randomText, ssidInfo } = this.state;
 
     return (
       <div className="app">
@@ -100,25 +134,34 @@ class App extends PureComponent {
         )}
 
         <div className="connection-info" onClick={this.fetchData}>
-          <h1>SSID: NoHakePls</h1>
+          <h1>{ssidInfo.network}</h1>          
         </div>
 
         <div className="section">
           <div className="vendor-info" ref={this.scrollRef}>
-            {uniqueList.map((client, index) => {
-              return <div key={client.ip} className="vendor">{client.vendor} {client.ip}</div>
-            })}
+            <HorizontalMarquee>
+              {vendorCounts.map((client, index) => {
+                return <div key={client.name} className="vendor">
+                  {client.count} - {client.name}
+                </div>
+              })}
+            </HorizontalMarquee>
           </div>
         
-          <img src={hacker} onClick={window.location.reload} alt="hackers"/>
+          <img src={hacker} alt="hackers"/>
+
           <div className="info">
             <h1 onClick={this.fetchData}>{clients.length} CONNECTED</h1>
           </div>
         </div>
     
-
         <div style={{height: 220, overflow: 'hidden'}} className="terminal">
           <Terminal/>
+
+          <div className="debug-menu">
+            <DebugMenu fetchData={this.fetchData}></DebugMenu>
+          </div>
+          {/* <button className='menu-button'>Test</button> */} 
         </div>
          
       </div>

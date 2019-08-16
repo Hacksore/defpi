@@ -113,6 +113,15 @@ body, html {
   color: #272627;
 }
 
+
+.debug-menu {
+  position: absolute;
+  bottom: 0px;
+  right: 2px;
+  border: 6px;
+}
+
+
 @keyframes swaying {
   0%, 100%{ transform: rotate(-8deg);}
   50%{ transform: rotate(6deg); }

@@ -7,6 +7,8 @@ cd client/ && npm run build
 cd ../
 
 # sync files
-rsync -av  --exclude 'node_modules' --exclude '.git' ./ pi@192.168.86.1:/home/pi/defpi
+rsync -av  --exclude 'client/node_modules' --exclude '.git' ./ pi@192.168.86.1:/home/pi/defpi
+
+#rsync -av  --exclude 'node_modules' --exclude '.git' ./ pi@192.168.86.1:/home/pi/defpi
 
 ssh pi@192.168.86.1 'bash /home/pi/defpi/restart.sh'

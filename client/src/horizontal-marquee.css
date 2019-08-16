@@ -1,0 +1,20 @@
+.container {
+    height: 200px;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    text-align: left;
+}
+
+.slider {
+    top: 1em;
+    position: relative;
+    box-sizing: border-box;
+    animation: slider 10s linear infinite;
+    list-style-type: none;
+}
+
+@keyframes slider {
+    0%   { top:   10em }
+    100% { top: -14em }
+}
